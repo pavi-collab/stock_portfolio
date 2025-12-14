@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-3">Dashboard</h2>
+
+<a href="{{ url_for('portfolios') }}" class="btn btn-success mb-3">
+  <i class="bi bi-briefcase me-1"></i>View Portfolios
+</a>
+
+{% if portfolios %}
+<div class="row">
+  {% for item in portfolios %}
+  <div class="col-md-4 mb-3">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ item.portfolio.name }}</h5>
+        <p class="card-text small text-muted">
+          {{ item.portfolio.description or "" }}
+        </p>
+        <p class="mb-1"><strong>Total Cost:</strong> {{ item.total_cost|money }}</p>
+        <p class="mb-1"><strong>Market Value:</strong> {{ item.total_value|money }}</p>
+        <p class="mb-1">
+          <strong>P / L:</strong>
+          <span class="{% if item.total_pl >= 0 %}text-success{% else %}text-danger{% endif %}">
+            {{ item.total_pl|money }}
+          </span>
+        </p>
+        <a href="{{ url_for('portfolio_detail', portfolio_id=item.portfolio.id) }}"
+           class="btn btn-primary btn-sm mt-2">Open</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>You don’t have any portfolios yet. <a href="{{ url_for('add_portfolio') }}">Create one</a>.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Holding{% endblock %}
+{% block content %}
+<h2>
+  {% if mode == "add" %}Add Holding{% else %}Edit Holding{% endif %}
+  ({{ portfolio.name }})
+</h2>
+<form method="post">
+  <div class="mb-3">
+    <label class="form-label">Symbol</label>
+    <input name="symbol" class="form-control"
+           value="{{ holding.symbol if holding else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Quantity</label>
+    <input name="quantity" type="number" step="0.0001" class="form-control"
+           value="{{ holding.quantity if holding else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Average Cost per Share</label>
+    <input name="avg_cost" type="number" step="0.0001" class="form-control"
+           value="{{ holding.avg_cost if holding else '' }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">First Buy Date (optional)</label>
+    <input name="first_buy_date" type="date" class="form-control"
+           value="{{ holding.first_buy_date|datefmt if holding and holding.first_buy_date else '' }}">
+  </div>
+  <button class="btn btn-primary">
+    {% if mode == "add" %}Add Holding{% else %}Save Changes{% endif %}
+  </button>
+</form>
+{% endblock %}
